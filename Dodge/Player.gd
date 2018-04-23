@@ -2,6 +2,8 @@
 
 extends Area2D
 
+signal hit
+
 export (int) var SPEED  # how fast the player will move (pixels/sec)
 var screensize  # size of the game window
 
@@ -10,6 +12,7 @@ var screensize  # size of the game window
 func _ready():
 	# Called every time the node is added to the scene.
 	screensize = get_viewport_rect().size
+	hide()
 
 
 func _process(delta):
@@ -46,5 +49,22 @@ func _process(delta):
 	elif velocity.y != 0:
 		$AnimatedSprite.animation = "up"
 		$AnimatedSprite.flip_v = velocity.y > 0
+		
+
+
+func _on_Player_body_entered(body):
+	hide()
+	emit_signal("hit")
+	$CollisionShape2D.disabled = true
+	
+
+func start(pos):
+	position = pos
+	show()
+	$CollisionShape2D.disabled = false
+	
+	
+
+
 
 
